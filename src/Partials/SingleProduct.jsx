@@ -1,9 +1,16 @@
 import { FaRegHeart, FaRegEye } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../store/cartSlice";
 
 function SingleProduct({book}) {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
   const calculateDiscount = (price, discount) => {
     return price - (price * discount) / 100;
   }
+  const addToCart = (product) => {
+    dispatch(addProduct(product));
+  };
 
   return (
     <div className="px-4 w-full md:w-1/2 xl:w-1/3 max-w-full">
@@ -35,9 +42,9 @@ function SingleProduct({book}) {
                     </a>
                   </li>
                   <li className="m-[5px]">
-                    <a href="cart.html" className="relative block h-10 bg-secondary text-white font-bold rounded px-[18px] leading-[39px] before:absolute before:inset-0 before:w-full before:h-full before:transition before:transition-all before:duration-200 hover:before:scale-110 before:rounded before:bg-secondary z-10 before:z-[-1]">
+                    <button onClick={() => addToCart(book)} className="relative block h-10 bg-secondary text-white font-bold rounded px-[18px] leading-[39px] before:absolute before:inset-0 before:w-full before:h-full before:transition before:transition-all before:duration-200 hover:before:scale-110 before:rounded before:bg-secondary z-10 before:z-[-1]">
                       Add to Cart
-                    </a>
+                    </button>
                   </li>
                   <li className="m-[5px]">
                     <a href="wishlist.html" className="relative block w-10 h-10 rounded duration-300 bg-white text-heading flex justify-center items-center before:absolute before:inset-0 before:w-full before:h-full before:transition before:transition-all before:duration-200 hover:before:scale-110 before:rounded before:bg-white z-10 before:z-[-1] before:text-[30px]">

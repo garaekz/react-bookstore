@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import reactLogo from '../assets/react.svg'
-import Navbar from '../components/Navbar'
+import Navbar from '../Partials/Navbar'
 
 function Home() {
   const [count, setCount] = useState(0)

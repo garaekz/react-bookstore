@@ -6,6 +6,7 @@ export const bookSlice = createSlice({
     {
       id: 1,
       title: "The Hobbit",
+      slug: "the-hobbit",
       image: "https://i0.wp.com/stonesoup.com/wp-content/uploads/2018/05/2018-6-The-Hobbit.jpg",
       author: "J.R.R. Tolkien",
       price: 10,
@@ -16,6 +17,7 @@ export const bookSlice = createSlice({
     {
       id: 2,
       title: "Enders Game",
+      slug: "enders-game",
       image: "https://covers.openlibrary.org/b/id/8473692-L.jpg",
       author: "Orson Scott Card",
       price: 15,
@@ -26,6 +28,7 @@ export const bookSlice = createSlice({
     {
       id: 3,
       title: "Harry Potter and the Philosopher's Stone",
+      slug: "harry-potter-and-the-philosophers-stone",
       image: "https://assets.brightspot.abebooks.a2z.com/dims4/default/aae7575/2147483647/strip/true/crop/360x420+0+0/resize/720x840!/format/webp/quality/90/?url=http%3A%2F%2Fabebooks-brightspot.s3.amazonaws.com%2Fa1%2F15%2F406b12f246809bf0983b228e154b%2Fharry.png",
       author: "J.K. Rowling",
       price: 20,
@@ -36,16 +39,18 @@ export const bookSlice = createSlice({
     {
       id: 4,
       title: "Crime and Punishment",
+      slug: "crime-and-punishment",
       image: "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781510766709/crime-and-punishment-9781510766709_xlg.jpg",
       author: "Fyodor Dostoyevsky",
       price: 35,
-      rating: 4,
+      rating: 4.5,
       discount: 25,
-      genre: "Classic",
+      genre: "Thriller",
     },
     {
       id: 5,
       title: "1984",
+      slug: "1984",
       image: "https://cdn.shopify.com/s/files/1/0627/1477/products/1984-george-orwell-cover-print-179850_1024x1024.jpg",
       author: "George Orwell",
       price: 10,

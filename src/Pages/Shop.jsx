@@ -1,13 +1,12 @@
-import { useState } from "react";
-import SingleProduct from "../Components/SingleProduct";
+import SingleProduct from "../Partials/SingleProduct";
 import { HiFilter, HiMinus } from "react-icons/hi";
 import { BsCircle, BsCheckCircleFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
-import Navbar from "../components/Navbar";
+import { addProduct } from "../store/cartSlice";
 
 function Shop() {
   const books = useSelector((state) => state.books);
-  
+    
   return (
     <>
       {/* BreadCrumbs */}
