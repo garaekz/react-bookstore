@@ -1,7 +1,8 @@
-import { FaMinus, FaPlus, FaStar, FaStarHalf, FaTimes } from "react-icons/fa";
+import { FaMinus, FaPlus, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { updateProduct, removeProduct } from "../store/cartSlice";
+import RatingStars from "./RatingStars";
 
 function SingleCartProduct({ item }) {
   const dispatch = useDispatch();
@@ -10,6 +11,9 @@ function SingleCartProduct({ item }) {
     dispatch(removeProduct(id));
   };
   const updateQuantity = (id, quantity) => {
+    if (quantity < 1) {
+      return removeFromCart(id);
+    }
     dispatch(updateProduct({ id, quantity }));
   };
 
@@ -30,20 +34,8 @@ function SingleCartProduct({ item }) {
         </button>
       </div>
       <div className="flex-1 relative pr-[110px]">
-        <div className="mb-[14px]">
-          {
-            [...Array(Math.floor(item.product.rating))].map((_, i) => {
-              return (
-                <FaStar
-                  key={i}
-                  className={`text-[#FFC107] text-sm inline-block ${
-                    i < item.product.rating ? "opacity-100" : "opacity-50"
-                  }`}
-                />
-              );
-            })
-          }
-          { item.product.rating % 1 !== 0 && <FaStarHalf className="text-[#FFC107] text-sm inline-block" /> }
+        <div className="mb-[14px] text-sm">
+          <RatingStars rating={item.product.rating} />
         </div>
         <h3 className="text-heading font-bold hover:text-primary duration-300 mb-[10px] overflow-hidden ">
           <Link to={'/shop'}>
@@ -54,11 +46,11 @@ function SingleCartProduct({ item }) {
           ${item.product.price.toFixed(2)}
         </div>
         <div className="flex items-center absolute top-1/2 right-0 justify-end">
-          <span className="text-[10px] flex items-center justify-center cursor-pointer h-[26px] w-[26px] bg-[#f6f7fb] rounded-full transition-all">
+          <span onClick={() => updateQuantity(item.product.id, item.quantity-1)} className="text-[10px] flex items-center justify-center cursor-pointer h-[26px] w-[26px] bg-[#f6f7fb] rounded-full transition-all">
             <FaMinus />
           </span>
-          <input type="text" defaultValue={item.quantity} onChange={() => updateQuantity(item.product.id, item.quantity)} className="font-semibold text-[#27272e] h-[26px] w-[30px] border-none text-center p-0 outline-none" />
-          <span className="text-[10px] flex items-center justify-center cursor-pointer h-[26px] w-[26px] bg-[#f6f7fb] rounded-full transition-all">
+          <input type="number" min={0} value={item.quantity} onChange={event => updateQuantity(item.product.id, Number(event.target.value))} className="font-semibold text-[#27272e] h-[26px] w-[30px] border-none text-center p-0 outline-none" />
+          <span onClick={() => updateQuantity(item.product.id, item.quantity+1)} className="text-[10px] flex items-center justify-center cursor-pointer h-[26px] w-[26px] bg-[#f6f7fb] rounded-full transition-all">
             <FaPlus />
           </span>
         </div>

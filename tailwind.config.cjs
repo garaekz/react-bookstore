@@ -14,7 +14,11 @@ module.exports = {
         secondary: "#ff497c",
         body: "#777777",
         heading: "#292930",
-        light: "#F6F7FB",
+        light: {
+          DEFAULT: "#F6F7FB",
+          primary: "#8c71db",
+        },
+        lightest: "#C4C4C4",
       },
       boxShadow: {
         discount: "0 8px 16px 0 rgb(53 119 240 / 30%)",

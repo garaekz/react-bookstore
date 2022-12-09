@@ -24,19 +24,23 @@ export const cartSlice = createSlice({
     updateProduct: (state, action) => {
       const product = action.payload;
       const productExists = state.find((b) => b.product && b.product.id === product.id);
-      if (productExists) {
-        productExists.quantity = product.quantity;
-        const tmpPrice = productExists.quantity * productExists.product.price;
-        if (productExists.product.discount) {
-          productExists.totalPrice = tmpPrice - (tmpPrice * productExists.product.discount) / 100;
-        }
+      if (!productExists) {
+        return;
       }
+      productExists.quantity = product.quantity;
+      let tmpPrice = productExists.quantity * productExists.product.price;
+      console.log("updateProduct", productExists);
+      if (productExists.product.discount) {
+        tmpPrice = tmpPrice - (tmpPrice * productExists.product.discount) / 100;
+      }
+      productExists.totalPrice = tmpPrice;
     },
     removeProduct: (state, action) => {
-      state.splice(
-        state.findIndex((b) => b.id === action.payload),
-        1
-      );
+      console.log("removeProduct", action.payload);
+      const index = state.findIndex((b) => b.product.id === action.payload)
+      if (index !== -1) {
+        state.splice(index, 1);
+      }
     },
   },
 });

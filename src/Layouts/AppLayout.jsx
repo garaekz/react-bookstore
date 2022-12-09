@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../Partials/Navbar'
 import Test from '../Pages/Test'
+import MainFooter from '../Partials/MainFooter';
 
 export default function AppLayout() {
   return (
@@ -9,6 +10,7 @@ export default function AppLayout() {
     <main className='mt-20'>
       <Outlet />
     </main>
+    <MainFooter />
   </>
   );
 }
