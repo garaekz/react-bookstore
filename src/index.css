@@ -30,3 +30,7 @@
 .scrollbar::-webkit-scrollbar-track{background:#f1f1f1;border-radius:10px;transition:.5s}
 .scrollbar::-webkit-scrollbar{width:8px;border-radius:10px}
 .scrollbar::-webkit-scrollbar-thumb:hover{background:theme('colors.primary')}
+
+.slick-slide {
+  padding: 0 15px;
+}

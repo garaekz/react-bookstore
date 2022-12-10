@@ -55,8 +55,8 @@ function Shop() {
       {/* BreadCrumbs */}
       <div className="relative pt-10 pb-[45px] bg-[#f8f8f8]">
         <div className="px-[15px] w-full md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto">
-          <div className="flex flex-wrap -mx-4 items-center">
-            <div className="px-4 shrink-0 w-full max-w-full">
+          <div className="flex flex-wrap items-center">
+            <div className="shrink-0 w-full max-w-full">
               <ul className="flex p-0 mb-4 items-center">
                 <li className="inline-block font-medium text-[#999] hover:text-gray-900">
                   <Link to="/">Home</Link>
@@ -76,7 +76,7 @@ function Shop() {
       {/* Shop area */}
       <div className="py-[60px] sm:py-20 bg-white">
         <div className="px-[15px] w-full md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto">
-          <div className="flex flex-wrap -mx-4">
+          <div className="flex flex-wrap -mx-3">
             {/* Backdrop filters */}
             {isFiltersOpen && (
               <div
@@ -117,8 +117,8 @@ function Shop() {
                         !isGenresOpen ? "h-0" : "h-36"
                       } transition-all duration-300 overflow-hidden -my-[5px]`}
                     >
-                      {genres.map((genre) => (
-                        <li className="m-0 py-[6px]" key={genre}>
+                      {genres.map((genre, index) => (
+                        <li className="m-0 py-[6px]" key={index}>
                           <button
                             className="flex items-center gap-3"
                             onClick={() => filterProducts("genre", genre)}
@@ -156,8 +156,8 @@ function Shop() {
                         !isAuthorsOpen ? "h-0" : "h-56"
                       } transition-all duration-300 overflow-hidden -my-[5px]`}
                     >
-                      {authors.map((author) => (
-                        <li className="m-0 py-[6px]" key={author}>
+                      {authors.map((author, index) => (
+                        <li className="m-0 py-[6px]" key={index}>
                           <button
                             className="flex items-center gap-3"
                             onClick={() => filterProducts("author", author)}
@@ -214,9 +214,9 @@ function Shop() {
               {/* Product grid */}
               <div className="flex flex-wrap -mx-4">
                 {/* Single product */}
-                {filteredBooks.map((book) => (
-                  <div className="px-4 w-full md:w-1/2 xl:w-1/3 max-w-full transition ease-in-out duration-300">
-                    <SingleProductCard key={book.id} product={book} />
+                {filteredBooks.map((book, index) => (
+                  <div key={index} className="px-4 w-full md:w-1/2 xl:w-1/3 max-w-full transition ease-in-out duration-300">
+                    <SingleProductCard product={book} />
                   </div>
                 ))}
               </div>

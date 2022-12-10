@@ -29,14 +29,12 @@ export const cartSlice = createSlice({
       }
       productExists.quantity = product.quantity;
       let tmpPrice = productExists.quantity * productExists.product.price;
-      console.log("updateProduct", productExists);
       if (productExists.product.discount) {
         tmpPrice = tmpPrice - (tmpPrice * productExists.product.discount) / 100;
       }
       productExists.totalPrice = tmpPrice;
     },
     removeProduct: (state, action) => {
-      console.log("removeProduct", action.payload);
       const index = state.findIndex((b) => b.product.id === action.payload)
       if (index !== -1) {
         state.splice(index, 1);
