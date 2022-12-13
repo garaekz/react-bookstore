@@ -1,108 +1,153 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import client from "./client";
+import qs from "qs";
+
+const parseBookList = (data) => {
+  return data.map((book) => {
+    const { id, attributes } = book;
+    const authors = attributes.authors.data.map(
+      (author) => author.attributes
+    );
+    const genres = attributes.genres.data.map(
+      (genre) => genre.attributes
+    );
+
+    return {
+      id,
+      ...attributes,
+      authors,
+      genres,
+    };
+  });
+};
 
 export const bookSlice = createSlice({
   name: "books",
-  initialState: [
-    {
-      id: 1,
-      title: "The Hobbit",
-      slug: "the-hobbit",
-      image: "https://i0.wp.com/stonesoup.com/wp-content/uploads/2018/05/2018-6-The-Hobbit.jpg",
-      author: "J.R.R. Tolkien",
-      price: 10,
-      rating: 5,
-      discount: 0,
-      genre: "Fantasy",
-      description: "The Hobbit, or There and Back Again is a children's fantasy novel by English author J. R. R. Tolkien. It was published on 21 September 1937 to wide critical acclaim, being nominated for the Carnegie Medal and awarded a prize from the New York Herald Tribune for best juvenile fiction. The book remains popular and is recognized as a classic in children's literature.",
+  initialState: {
+    list: {
+      data: [],
+      pagination: {
+        start: 0,
+        limit: 10,
+        total: 0,
+      },
+      status: "idle",
+      error: null,
     },
-    {
-      id: 2,
-      title: "Enders Game",
-      slug: "enders-game",
-      image: "https://covers.openlibrary.org/b/id/8473692-L.jpg",
-      author: "Orson Scott Card",
-      price: 15,
-      rating: 3.5,
-      discount: 0,
-      genre: "Sci-Fi",
-      description: "Ender's Game is a 1985 military science fiction novel by American author Orson Scott Card. Set in Earth's future, the novel presents an imperiled mankind after two conflicts with the Formics, an insectoid alien species. The novel's story follows the experiences of Andrew 'Ender' Wiggin, who is drafted to train at Battle School for a future invasion. Ender is recruited by his brother Peter and Colonel Graff to lead the Battle School against the Formics. The novel explores Ender's psychological development, his relationships with his peers and superiors, and his tactics as a military leader.",
+    current: {
+      data: null,
+      status: "idle",
+      error: null,
     },
-    {
-      id: 3,
-      title: "Harry Potter and the Philosopher's Stone",
-      slug: "harry-potter-and-the-philosophers-stone",
-      image: "https://assets.brightspot.abebooks.a2z.com/dims4/default/aae7575/2147483647/strip/true/crop/360x420+0+0/resize/720x840!/format/webp/quality/90/?url=http%3A%2F%2Fabebooks-brightspot.s3.amazonaws.com%2Fa1%2F15%2F406b12f246809bf0983b228e154b%2Fharry.png",
-      author: "J.K. Rowling",
-      price: 20,
-      rating: 5,
-      discount: 10,
-      genre: "Fantasy",
-      description: "Harry Potter and the Philosopher's Stone is a fantasy novel written by British author J. K. Rowling. The first novel in the Harry Potter series and Rowling's debut novel, it follows Harry Potter, a young wizard who discovers his magical heritage on his eleventh birthday, when he receives a letter of acceptance to Hogwarts School of Witchcraft and Wizardry. Harry makes close friends and a few enemies during his first year at the school, and with the help of his friends, he faces an attempted comeback by the dark wizard Lord Voldemort, who killed Harry's parents, but failed to kill Harry when he was just 15 months old.",
+    related: {
+      data: [],
+      slug: null,
+      status: "idle",
+      error: null,
     },
-    {
-      id: 4,
-      title: "Crime and Punishment",
-      slug: "crime-and-punishment",
-      image: "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781510766709/crime-and-punishment-9781510766709_xlg.jpg",
-      author: "Fyodor Dostoyevsky",
-      price: 35,
-      rating: 4.5,
-      discount: 25,
-      genre: "Thriller",
-      description: "Crime and Punishment is a novel by the Russian author Fyodor Dostoyevsky. It was first published in the literary journal The Russian Messenger in twelve monthly installments during 1866. It was later published in a single volume. The novel's full title is Crime and Punishment: A Novel in Four Parts. The author completed the work in four months, from February to May 1866. The novella reflects Dostoyevsky's own experiences in prison, where he was sentenced to death in 1849. It is considered one of the first great works of world literature, and one of the finest psychological novels ever written.",
-    },
-    {
-      id: 5,
-      title: "1984",
-      slug: "1984",
-      image: "https://cdn.shopify.com/s/files/1/0627/1477/products/1984-george-orwell-cover-print-179850_1024x1024.jpg",
-      author: "George Orwell",
-      price: 10,
-      rating: 5,
-      discount: 0,
-      genre: "Sci-Fi",
-      description: "Nineteen Eighty-Four, often published as 1984, is a dystopian novel published in 1949 by English author George Orwell. The novel is set in Airstrip One, a world of perpetual war, omnipresent government surveillance, and public manipulation, dictated by a political system euphemistically named English Socialism (or Ingsoc in Newspeak, the government's invented language) under the control of a privileged Inner Party elite that persecutes all individualism and independent thinking as thoughtcrime. The story is set in London, Oceania, which is a province of the superstate known as Oceania in a world of perpetual war, omnipresent government surveillance, and public manipulation.",
-    },
-    {
-      id: 6,
-      title: "The Great Gatsby",
-      slug: "the-great-gatsby",
-      image: "https://149352626.v2.pressablecdn.com/wp-content/uploads/2018/02/CK-3-684x1024.jpg",
-      author: "F. Scott Fitzgerald",
-      price: 15,
-      rating: 4,
-      discount: 0,
-      genre: "Novel",
-      description: "The Great Gatsby, F. Scott Fitzgerald's third book, stands as the supreme achievement of his career. This exemplary novel of the Jazz Age has been acclaimed by generations of readers. The story of the fabulously wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan, of lavish parties on Long Island at a time when The New York Times noted \"gin was the national drink and sex the national obsession\" it is an exquisitely crafted tale of America in the 1920s.", 
-    },
-    {
-      id: 7,
-      title: "Harry Potter and the Chamber of Secrets",
-      slug: "harry-potter-and-the-chamber-of-secrets",
-      image: "https://m.media-amazon.com/images/I/51mFoFmu0EL._SY344_BO1,204,203,200_QL70_ML2_.jpg",
-      author: "J.K. Rowling",
-      price: 20,
-      rating: 5,
-      discount: 10,
-      genre: "Fantasy",
-      description: ""
-    },
-  ],
+  },
   reducers: {
-    addBook: (state, action) => {
-      state.push(action.payload);
+    setRelatedBookSlug(state, action) {
+      state.related.slug = action.payload;
     },
-    removeBook: (state, action) => {
-      return state.filter((book) => book.id !== action.payload.id);
-    },
-    updateBook: (state, action) => {
-      const index = state.findIndex((book) => book.id === action.payload.id);
-      if (index !== -1) {
-        state[index] = action.payload;
-      }
-    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchBooks.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchBooks.fulfilled, (state, action) => {
+        const data = parseBookList(action.payload.data);
+        const pagination = action.payload.meta.pagination;
+
+        state.list.status = "succeeded";
+        state.list.data = data;
+        state.list.pagination = pagination;
+      })
+      .addCase(fetchBooks.rejected, (state, action) => {
+        console.log(action.error.message);
+        state.list.status = "failed";
+        state.list.error = action.error.message;
+      })
+      .addCase(fetchBookBySlug.pending, (state) => {
+        state.current.status = "loading";
+      })
+      .addCase(fetchBookBySlug.fulfilled, (state, action) => {
+        const data = parseBookList(action.payload.data);
+
+        state.current.status = "succeeded";
+        state.current.data = data[0];
+      })
+      .addCase(fetchBookBySlug.rejected, (state, action) => {
+        state.current.status = "failed";
+        state.current.error = action.error.message;
+      })
+      .addCase(fetchRelatedBooks.pending, (state, action) => {
+        console.log('loading', action);
+        state.related.status = "loading";
+      })
+      .addCase(fetchRelatedBooks.fulfilled, (state, action) => {
+        const data = parseBookList(action.payload.data);
+        console.log('data', data);
+        state.related.status = "succeeded";
+        state.related.data = data;
+      })
+      .addCase(fetchRelatedBooks.rejected, (state, action) => {
+        state.related.status = "failed";
+        state.related.error = action.error.message;
+        console.error(action.error.message);
+      });
   },
 });
 
 export default bookSlice.reducer;
-export const { addBook, removeBook, updateBook } = bookSlice.actions;
+export const { booksRequested, booksReceived, booksRequestFailed } =
+  bookSlice.actions;
+
+const baseUrl = import.meta.env.VITE_BASE_URL;
+
+export const fetchBooks = createAsyncThunk("books/fetchBooks", async () => {
+  return await client(
+    `${baseUrl}books?pagination[start]=0&pagination[limit]=10&populate=*`
+  );
+});
+
+export const fetchBookBySlug = createAsyncThunk(
+  "books/fetchBookBySlug",
+  async (slug) => {
+    return await client(
+      `${baseUrl}books?filters[slug][$eqi]=${slug}&populate=*`
+    );
+  }
+);
+
+export const fetchRelatedBooks = createAsyncThunk(
+  "books/fetchRelatedBooks",
+  async (book, thunkAPI) => {
+    thunkAPI.dispatch(bookSlice.actions.setRelatedBookSlug(book.slug));
+    const { genres } = book;
+    const genreSlugs = genres.map((genre) => genre.slug);
+    const query = qs.stringify({
+      filters: {
+        genres: {
+          slug: {
+            $in: genreSlugs,
+          },
+        },
+        slug: {
+          $ne: book.slug,
+        },
+      },
+      pagination: {
+        page: 1,
+        pageSize: 4,
+      },
+      populate: "*",
+    }, {
+      encodeValuesOnly: true,
+    });
+
+    console.log(query);
+    return await client(`${baseUrl}books?${query}`);
+  }
+);

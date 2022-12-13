@@ -4,11 +4,44 @@ import { GoFlame } from "react-icons/go";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import FeaturedProductCard from "../Partials/FeaturedProductCard";
+import FeaturedProductCard from "../components/FeaturedProductCard";
 
 function Home() {
   const [count, setCount] = useState(0);
   const books = useSelector((state) => state.books);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          initialSlide: 3,
+        },
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <div className="pt-10 pb-[70px] bg-light">
@@ -33,9 +66,9 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="px-[15px] w-full md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto">
+      <div className="w-full md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl mx-auto">
         <div className="w-full z-[1] relative">
-          <Slider>
+          <Slider {...settings}>
             {books.map((product) => (
               <FeaturedProductCard key={product.id} product={product} />
             ))}

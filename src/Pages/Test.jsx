@@ -4,7 +4,7 @@ import { IoCartOutline, IoPersonOutline } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import reactLogo from "../assets/react.svg";
-import Navbar from "../Partials/Navbar";
+import Navbar from "../components/Navbar";
 
 function Home() {
   const [count, setCount] = useState(0);

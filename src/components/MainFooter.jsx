@@ -48,8 +48,8 @@ function MainFooter() {
               </h2>
               <div className="block relative md:flex md:flex-wrap md:items-center w-full">
                 <div className="mb-[15px] mr-5">
-                  <label class="relative block">
-                    <span class="absolute inset-y-0 left-[30px] flex items-center pl-2">
+                  <label className="relative block">
+                    <span className="absolute inset-y-0 left-[30px] flex items-center pl-2">
                       <MdOutgoingMail />
                     </span>
                     <input

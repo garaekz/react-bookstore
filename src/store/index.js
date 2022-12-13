@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import bookReducer from "./bookSlice";
 import cartReducer from "./cartSlice";
 import filterReducer from "./filterSlice";
+import api from "./client";
 
 export const store = configureStore({
   reducer: {

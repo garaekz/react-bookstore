@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
-import Navbar from '../Partials/Navbar'
+import Navbar from '../components/Navbar'
 import Test from '../Pages/Test'
-import MainFooter from '../Partials/MainFooter';
+import MainFooter from '../components/MainFooter';
 
 export default function AppLayout() {
   return (

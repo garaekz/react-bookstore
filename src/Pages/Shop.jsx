@@ -1,54 +1,40 @@
-import SingleProductCard from "../Partials/SingleProductCard";
+import SingleProductCard from "../components/SingleProductCard";
 import { HiFilter, HiMinus, HiPlus } from "react-icons/hi";
 import { BsCircle, BsCheckCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { clearFilters, setFilter, changeSort } from "../store/filterSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
+import { fetchBooks } from "../store/bookSlice";
 
 function Shop() {
   const dispatch = useDispatch();
-  const books = useSelector((state) => state.books);
+  const list = useSelector((state) => state.books.list.data);
+  const pagination = useSelector((state) => state.books.list.pagination);
+  const status = useSelector((state) => state.books.list.status);
+  const error = useSelector((state) => state.books.list.error);
+
   const filter = useSelector((state) => state.filter);
   const [isGenresOpen, setIsGenresOpen] = useState(true);
   const [isAuthorsOpen, setIsAuthorsOpen] = useState(true);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
+  useEffect(() => {
+    console.log(status);
+    if (status === 'idle') {
+      dispatch(fetchBooks())
+    }
+  }, [status])
+
   const filterProducts = (type, filter) => {
     dispatch(setFilter({ type, filter }));
   };
 
-  const filteredBooks = books.filter((book) => {
-    if (filter.type === "genre") {
-      return book.genre === filter.filter;
-    }
-    if (filter.type === "author") {
-      return book.author === filter.filter;
-    }
-    if (filter.type === "price") {
-      return book.price === filter.filter;
-    }
-    return true;
-  }).sort((a, b) => {
-    if (filter.sort === "title") {
-      return a.title.localeCompare(b.title);
-    }
-    if (filter.sort === "pricelow") {
-      return a.price - b.price;
-    }
-    if (filter.sort === "pricehigh") {
-      return b.price - a.price;
-    }
-    if (filter.sort === "rating") {
-      return b.rating - a.rating;
-    }
-    return true;
-  });
+  const filteredBooks = [];
 
-
-  const genres = [...new Set(books.map((book) => book.genre))];
-  const authors = [...new Set(books.map((book) => book.author))];
+  const genres = [];
+  const authors = [];
 
   return (
     <>
@@ -193,7 +179,7 @@ function Shop() {
                   <div className="mb-10">
                     <div className="flex flex-wrap justify-between lg:justify-end items-center -m-2.5">
                       <span className="m-2.5 font-medium">
-                        {`Showing ${filteredBooks.length} of ${books.length} products`}
+                        {`Showing ${list.length} of ${pagination.total} products`}
                       </span>
                       <select value={filter.sort} onChange={event => dispatch(changeSort(event.target.value)) } className="form-select appearance-none bg-no-repeat px-8 md:pr-11 m-2.5 h-14 font-medium border-2 border-[#CBD3D9] rounded-md outline-none w-full md:w-auto text-[#27272E] appearence-none">
                         <option value="rating">Sort by rating</option>
@@ -214,7 +200,7 @@ function Shop() {
               {/* Product grid */}
               <div className="flex flex-wrap -mx-4">
                 {/* Single product */}
-                {filteredBooks.map((book, index) => (
+                {list.map((book, index) => (
                   <div key={index} className="px-4 w-full md:w-1/2 xl:w-1/3 max-w-full transition ease-in-out duration-300">
                     <SingleProductCard product={book} />
                   </div>
