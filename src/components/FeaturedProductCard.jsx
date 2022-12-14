@@ -12,19 +12,19 @@ function FeaturedProductCard({ product }) {
   };
 
   return (
-    <div className="group scale-100 shadow-featured my-5 relative duration-300 rounded-md text-center before:w-full before:h-50px before:bg-black before:absolute before:left-0 before:top-1/2 before:blur-[100px] before:translate-y-[-50%]">
+    <>
+    <div className="featured-product group scale-100 px-[15px] xl:px-0 xl:pt-20 shadow-featured my-5 relative duration-300 rounded-lg text-center before:w-full before:h-50px before:bg-black before:absolute before:left-0 before:top-1/2 before:blur-[100px] before:translate-y-[-50%]">
       {/* Thumbnail */}
       <div className="relative block">
-        <Link
-          to={`/shop/${product.slug}`}
+        <div
           className="rounded-t-lg overflow-hidden block relative bg-[#f7f7f7]"
         >
           <img
             src={product.image}
             alt="product"
-            className="rounded-t-lg w-full h-[400px] inline-block duration-300 object-cover object-center"
+            className="rounded-t-lg w-full h-[400px] xl:h-[200px] inline-block duration-300 object-cover object-center"
           />
-        </Link>
+        </div>
       </div>
       {/* Content */}
       <div className="p-[30px] pt-[25px] relative bg-white">
@@ -61,6 +61,7 @@ function FeaturedProductCard({ product }) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

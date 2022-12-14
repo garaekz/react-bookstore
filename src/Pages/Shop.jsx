@@ -21,7 +21,6 @@ function Shop() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   useEffect(() => {
-    console.log(status);
     if (status === 'idle') {
       dispatch(fetchBooks())
     }

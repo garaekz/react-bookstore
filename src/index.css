@@ -31,6 +31,18 @@
 .scrollbar::-webkit-scrollbar{width:8px;border-radius:10px}
 .scrollbar::-webkit-scrollbar-thumb:hover{background:theme('colors.primary')}
 
-.slick-slide {
+.related-slider .slick-slide {
   padding: 0 15px;
+}
+
+.slick-current .featured-product {
+  transform: scale(1.1);
+  box-shadow: 0px 10px 80px -70px rgb(0 0 0 / 70%);
+  z-index: 1;
+}
+
+@media (min-width: 1200px) {
+  .slick-current .featured-product {
+    transform: scale(1.2);
+  }
 }
